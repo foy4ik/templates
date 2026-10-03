@@ -1,0 +1,40 @@
+/* Design tokens, copied from foy4ik.github.io (index.html). */
+:root {
+  --bg: #f5f4fa;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f0eef8;
+  --border: #e3e0ee;
+  --text: #151420;
+  --text-dim: #635f72;
+  --accent: #6a3df0;
+  --accent-rgb: 106, 61, 240;
+  --accent-2: #0ea88a;
+  --accent-2-rgb: 14, 168, 138;
+  --danger: #d6304a;
+  --shadow: 0 20px 60px -20px rgba(20, 10, 60, 0.22);
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius-card: 16px;
+  --radius-btn: 10px;
+  --wrap: 1080px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #09080d;
+    --bg-elevated: #121119;
+    --surface: #141319;
+    --surface-2: #1b1a23;
+    --border: #28262f;
+    --text: #eeecf5;
+    --text-dim: #98939f;
+    --accent: #8b6bff;
+    --accent-rgb: 139, 107, 255;
+    --accent-2: #3fe8bd;
+    --accent-2-rgb: 63, 232, 189;
+    --danger: #ff6b81;
+    --shadow: 0 30px 90px -24px rgba(0, 0, 0, 0.65);
+  }
+}

@@ -1,1 +1,6 @@
 ТЗ сайт готовых шаблонов.md
+node_modules/
+dist/
+.astro/
+.env
+.superpowers/
