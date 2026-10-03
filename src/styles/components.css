@@ -8,10 +8,6 @@ section { padding-block: 72px; }
 .btn { min-height: 44px; justify-content: center; }
 .btn-sm { min-height: 36px; }
 
-/* subtle outlined button: transparent background, accent text */
-.btn-outline { background: transparent; color: var(--accent); border-color: rgba(var(--accent-rgb), 0.4); }
-.btn-outline:hover { border-color: var(--accent); background: rgba(var(--accent-rgb), 0.08); }
-
 /* header */
 .site-header {
   position: sticky; top: 0; z-index: 50;
@@ -98,7 +94,12 @@ section { padding-block: 72px; }
 .hero h1 { font-size: clamp(34px, 6vw, 62px); letter-spacing: -0.02em; line-height: 1.07; }
 .hero h1 span { color: var(--accent); }
 .hero p { max-width: 56ch; font-size: 18px; color: var(--text-dim); margin-top: 22px; }
-.section-cta { display: flex; justify-content: flex-start; margin-top: 28px; }
+.section-cta { margin-top: 12px; }
+/* link styled like the section eyebrow: dash + mono caps, accent colour */
+.eyebrow-link { margin-bottom: 0; padding-block: 14px; text-decoration: none; }
+.eyebrow-link::before { transition: width 0.2s ease; }
+.eyebrow-link:hover::before, .eyebrow-link:focus-visible::before { width: 32px; }
+.eyebrow-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
 
 /* steps */
