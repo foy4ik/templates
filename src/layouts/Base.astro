@@ -1,10 +1,13 @@
 ---
+import '../styles/fonts.css';
 import '../styles/tokens.css';
 import '../styles/base.css';
 import '../styles/components.css';
 import { url, absoluteUrl } from '../lib/url';
 import { siteConfig } from '../../site.config';
 import { robotsMeta } from '../lib/seo';
+import interLatin from '../assets/fonts/inter-latin-wght-normal.woff2?url';
+import interCyrillic from '../assets/fonts/inter-cyrillic-wght-normal.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import OrderModal from '../components/OrderModal.astro';
@@ -48,12 +51,8 @@ const metrikaSnippet = `(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m
     <meta name="twitter:card" content="summary_large_image" />
     {ld && <script type="application/ld+json" set:html={JSON.stringify(ld)} />}
     <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
-    />
+    <link rel="preload" href={interCyrillic} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     {metrikaId && <script is:inline set:html={metrikaSnippet} />}
   </head>
   <body>

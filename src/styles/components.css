@@ -203,5 +203,6 @@ section { padding-block: 72px; }
   width: 100%; resize: none; padding: 12px; border-radius: 10px; border: 1px solid var(--border);
   background: var(--surface); color: var(--text); font-size: 15px; line-height: 1.5;
 }
-.order-send { width: 100%; }
+.order-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.order-actions .btn { flex: 1 1 170px; }
 .order-hint { margin: 0; color: var(--text-dim); font-size: 14px; text-align: center; }

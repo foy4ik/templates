@@ -66,7 +66,23 @@ try {
     assert.equal(u.searchParams.get('text'), await page.inputValue('#order-text'));
   });
 
+  await check('modal shows the username to write to', async () => {
+    assert.equal((await page.textContent('#order-username')).trim(), '@' + tg);
+  });
+
+  await check('copy button copies the text without opening the chat', async () => {
+    await ctx.grantPermissions(['clipboard-read', 'clipboard-write']);
+    await page.evaluate(() => navigator.clipboard.writeText('stale'));
+    const pagesBefore = ctx.pages().length;
+    await page.click('#order-copy');
+    await page.waitForFunction(() => document.getElementById('order-copy').textContent.trim() === 'Скопировано ✓');
+    assert.equal(await page.evaluate(() => navigator.clipboard.readText()), await page.inputValue('#order-text'));
+    assert.equal(ctx.pages().length, pagesBefore);
+    assert.match(await page.textContent('#order-hint'), new RegExp('@' + tg));
+  });
+
   await check('click copies text to clipboard and shows hint', async () => {
+    await page.evaluate(() => navigator.clipboard.writeText('stale'));
     const popup = ctx.waitForEvent('page', { timeout: 5000 }).catch(() => null);
     await page.click('#order-tg');
     const p = await popup;
@@ -80,8 +96,9 @@ try {
     assert.equal(await page.locator('#order-dialog').evaluate((d) => d.open), false);
   });
 
-  await check('turnkey button shows "от" price', async () => {
+  await check('turnkey button shows "от" price and resets the copy button', async () => {
     await page.click('[data-variant="turnkey"]');
+    assert.equal((await page.textContent('#order-copy')).trim(), 'Скопировать текст');
     assert.equal(await page.textContent('#order-variant'), 'Под ключ');
     assert.match((await page.textContent('#order-price')).replace(/\s/g, ' '), /^от 15 000 ₽$/);
     assert.match(await page.inputValue('#order-text'), /от 15 000 ₽$/);
@@ -119,6 +136,11 @@ try {
     await page3.click('#order-tg');
     await page3.waitForFunction(() => document.getElementById('order-hint').textContent.includes('Скопируйте'));
     assert.equal(await page3.locator('#order-text').isVisible(), true);
+  });
+  await check('without clipboard the copy button does not claim success', async () => {
+    await page3.click('#order-copy');
+    await page3.waitForFunction(() => document.getElementById('order-hint').textContent.includes('Скопируйте'));
+    assert.notEqual((await page3.textContent('#order-copy')).trim(), 'Скопировано ✓');
   });
   await ctx3.close();
 

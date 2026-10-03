@@ -1,4 +1,8 @@
 ---
+import { siteConfig } from '../../site.config';
+
+const username = `@${siteConfig.telegramUsername}`;
+const hint = `Основная кнопка откроет чат с ${username} и скопирует текст заказа. Пишете с другого устройства? Нажмите «Скопировать текст» и отправьте его ${username}.`;
 ---
 
 <dialog class="order-dialog" id="order-dialog" aria-labelledby="order-title">
@@ -9,11 +13,15 @@
     <dl class="order-meta">
       <div><dt>Вариант</dt><dd id="order-variant"></dd></div>
       <div id="order-price-row"><dt>Цена</dt><dd id="order-price"></dd></div>
+      <div><dt>Писать в Telegram</dt><dd id="order-username">{username}</dd></div>
     </dl>
     <label class="order-label" for="order-text">Текст заказа</label>
     <textarea id="order-text" class="order-text" rows="4" readonly></textarea>
-    <a id="order-tg" class="btn btn-primary order-send" href="#" target="_blank" rel="noopener">Написать в Telegram</a>
-    <p id="order-hint" class="order-hint">Нажмите кнопку: текст заказа скопируется, и откроется чат со мной.</p>
+    <div class="order-actions">
+      <a id="order-tg" class="btn btn-primary" href="#" target="_blank" rel="noopener">Написать в Telegram</a>
+      <button id="order-copy" type="button" class="btn btn-ghost">Скопировать текст</button>
+    </div>
+    <p id="order-hint" class="order-hint" data-default={hint}>{hint}</p>
   </div>
 </dialog>
 

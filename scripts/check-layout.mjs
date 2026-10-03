@@ -1,5 +1,6 @@
 // Responsive sanity check on every page at 375/768/1280: npm run check:layout
-// Fails on horizontal overflow, purchase/CTA buttons smaller than 44px, or console errors.
+// Fails on horizontal overflow, purchase/CTA buttons smaller than 44px, console errors,
+// or any request to a third-party host (fonts and assets must be self-hosted).
 import { spawn, spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { chromium } from 'playwright';
@@ -26,8 +27,13 @@ try {
   for (const width of [375, 768, 1280]) {
     const page = await (await browser.newContext({ viewport: { width, height: 900 } })).newPage();
     const errors = [];
+    const external = new Set();
+    page.on('request', (r) => {
+      const u = r.url();
+      if (!u.startsWith(origin) && !u.startsWith('data:') && !u.startsWith('blob:')) external.add(new URL(u).host);
+    });
     page.on('pageerror', (e) => errors.push(e.message));
-    page.on('console', (m) => m.type() === 'error' && !/fonts\.(googleapis|gstatic)/.test(m.text()) && errors.push(m.text()));
+    page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
     for (const p of paths) {
       await page.goto(`${origin}${p}`, { waitUntil: 'networkidle' });
       const r = await page.evaluate(() => ({
@@ -40,6 +46,7 @@ try {
       if (r.small.length) problems.push(`${width}px ${p}: buttons under 44px: ${r.small.join(', ')}`);
       checked++;
     }
+    if (external.size) problems.push(`${width}px: third-party requests: ${[...external].join(', ')}`);
     if (errors.length) problems.push(`${width}px: console errors: ${[...new Set(errors)].join(' | ')}`);
   }
   await browser.close();

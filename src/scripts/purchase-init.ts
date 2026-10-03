@@ -8,8 +8,19 @@ const VARIANT_LABEL: Record<Variant, string> = {
   wish: 'Хочу этот шаблон',
 };
 
+const COPY_LABEL = 'Скопировать текст';
+const COPIED_LABEL = 'Скопировано ✓';
+
 const dialog = document.getElementById('order-dialog') as HTMLDialogElement | null;
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+const username = () => $('order-username').textContent!.trim();
+const orderText = () => ($('order-text') as unknown as HTMLTextAreaElement).value;
+let copiedTimer: number | undefined;
+
+function resetCopyButton(): void {
+  window.clearTimeout(copiedTimer);
+  $('order-copy').textContent = COPY_LABEL;
+}
 
 function num(v: string | undefined): number | undefined {
   return v ? Number(v) : undefined;
@@ -47,18 +58,33 @@ window.addEventListener('order:open', (e) => {
   }
   ($('order-text') as unknown as HTMLTextAreaElement).value = text;
   ($('order-tg') as HTMLAnchorElement).href = link;
-  $('order-hint').textContent = 'Нажмите кнопку: текст заказа скопируется, и откроется чат со мной.';
+  $('order-hint').textContent = $('order-hint').dataset.default!;
+  resetCopyButton();
   dialog.showModal();
 });
 
 // The link is a plain <a target="_blank">, so mobile browsers do not block it as a popup.
 // Copying runs alongside the navigation; the hint reports the result.
 $('order-tg')?.addEventListener('click', () => {
-  const text = ($('order-text') as unknown as HTMLTextAreaElement).value;
-  void copyText(text).then((ok) => {
+  void copyText(orderText()).then((ok) => {
     $('order-hint').textContent = ok
       ? 'Текст заказа скопирован — вставьте его в чат.'
       : 'Скопируйте текст заказа выше и вставьте его в чат.';
+  });
+});
+
+// Copy without opening the chat: for people who write from another device.
+$('order-copy')?.addEventListener('click', () => {
+  void copyText(orderText()).then((ok) => {
+    window.clearTimeout(copiedTimer);
+    if (ok) {
+      $('order-copy').textContent = COPIED_LABEL;
+      $('order-hint').textContent = `Текст скопирован. Отправьте его в Telegram: ${username()}.`;
+      copiedTimer = window.setTimeout(resetCopyButton, 3000);
+    } else {
+      $('order-copy').textContent = COPY_LABEL;
+      $('order-hint').textContent = `Скопируйте текст заказа выше вручную и отправьте его в Telegram: ${username()}.`;
+    }
   });
 });
 
