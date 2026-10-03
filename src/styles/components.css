@@ -96,9 +96,10 @@ section { padding-block: 72px; }
 .hero p { max-width: 56ch; font-size: 18px; color: var(--text-dim); margin-top: 22px; }
 .section-cta { margin-top: 12px; }
 /* link styled like the section eyebrow: dash + mono caps, accent colour */
-.eyebrow-link { margin-bottom: 0; padding-block: 14px; text-decoration: none; }
+.eyebrow-link { margin-bottom: 0; padding-block: 14px; text-decoration: none; font-size: 15px; gap: 12px; }
+.eyebrow-link::before { width: 28px; }
 .eyebrow-link::before { transition: width 0.2s ease; }
-.eyebrow-link:hover::before, .eyebrow-link:focus-visible::before { width: 32px; }
+.eyebrow-link:hover::before, .eyebrow-link:focus-visible::before { width: 44px; }
 .eyebrow-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
 
