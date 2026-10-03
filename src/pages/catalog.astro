@@ -15,7 +15,7 @@ const items = sortTemplates((await getCollection('templates')).map((e) => ({ slu
     <p class="muted" style="margin-bottom: 28px;">Готовые решения: берите исходники или закажите установку под ключ.</p>
     <CatalogFilter />
     <ul class="grid">
-      {items.map((i) => <li data-category={i.data.category}><TemplateCard entry={i.entry} /></li>)}
+      {items.map((i) => <li data-category={i.data.category}><TemplateCard entry={i.entry} level={2} /></li>)}
     </ul>
   </div>
 </Base>

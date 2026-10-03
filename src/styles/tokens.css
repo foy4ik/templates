@@ -13,6 +13,9 @@
   --accent-2-rgb: 14, 168, 138;
   --danger: #d6304a;
   --shadow: 0 20px 60px -20px rgba(20, 10, 60, 0.22);
+  /* Badge text: darker than the accents so it passes WCAG AA on the light theme. */
+  --badge-soon-text: #5b30d6;
+  --badge-ready-text: #05614f;
 
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
@@ -36,5 +39,7 @@
     --accent-2-rgb: 63, 232, 189;
     --danger: #ff6b81;
     --shadow: 0 30px 90px -24px rgba(0, 0, 0, 0.65);
+    --badge-soon-text: var(--accent);
+    --badge-ready-text: var(--accent-2);
   }
 }

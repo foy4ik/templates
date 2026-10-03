@@ -4,6 +4,7 @@
     "astro": "^7.3.5"
   },
   "devDependencies": {
+    "lighthouse": "^13.5.0",
     "playwright": "^1.63.0",
     "typescript": "^7.0.2",
     "vitest": "^5.0.3"
@@ -20,6 +21,8 @@
     "check": "astro check",
     "screenshots": "node scripts/screenshots.mjs",
     "check:order": "node scripts/check-order.mjs",
-    "og": "node scripts/make-og.mjs"
+    "og": "node scripts/make-og.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs",
+    "check:layout": "node scripts/check-layout.mjs"
   }
 }

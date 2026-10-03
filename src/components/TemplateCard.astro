@@ -7,8 +7,11 @@ import Cover from './Cover.astro';
 
 interface Props {
   entry: CollectionEntry<'templates'>;
+  /** Heading level of the card title; pick the level that follows the section heading. */
+  level?: 2 | 3;
 }
-const { entry } = Astro.props;
+const { entry, level = 3 } = Astro.props;
+const Heading = `h${level}` as 'h2' | 'h3';
 const d = entry.data;
 const price = displayPrice(d);
 ---
@@ -22,7 +25,7 @@ const price = displayPrice(d);
       <span class="badge">{categoryLabel(d.category)}</span>
       {d.status === 'soon' && <span class="badge badge-soon">Скоро</span>}
     </div>
-    <h3><a href={url(`templates/${entry.id}/`)}>{d.title}</a></h3>
+    <Heading class="tcard-title"><a href={url(`templates/${entry.id}/`)}>{d.title}</a></Heading>
     <p class="tcard-for">{d.audience}</p>
     {price !== null && <div class="tcard-price">от {formatPrice(price)}</div>}
   </div>
