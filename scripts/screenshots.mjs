@@ -53,6 +53,10 @@ try {
         await page.waitForTimeout(350);
         await page.screenshot({ path: `screenshots/menu-open-${width}-${scheme}.png` });
       }
+      await page.goto(`${origin}${base}/templates/booking-bot/`, { waitUntil: 'networkidle' });
+      await page.click('[data-variant="source"]');
+      await page.waitForTimeout(200);
+      await page.screenshot({ path: `screenshots/order-modal-${width}-${scheme}.png` });
       await ctx.close();
     }
   }

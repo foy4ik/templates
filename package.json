@@ -18,6 +18,7 @@
     "preview": "astro preview",
     "test": "vitest run",
     "check": "astro check",
-    "screenshots": "node scripts/screenshots.mjs"
+    "screenshots": "node scripts/screenshots.mjs",
+    "check:order": "node scripts/check-order.mjs"
   }
 }

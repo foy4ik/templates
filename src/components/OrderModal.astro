@@ -1,0 +1,22 @@
+---
+---
+
+<dialog class="order-dialog" id="order-dialog" aria-labelledby="order-title">
+  <div class="order-box">
+    <button type="button" class="order-x" data-order-close aria-label="Закрыть">✕</button>
+    <p class="eyebrow">// заказ</p>
+    <h2 id="order-title" class="order-title"></h2>
+    <dl class="order-meta">
+      <div><dt>Вариант</dt><dd id="order-variant"></dd></div>
+      <div id="order-price-row"><dt>Цена</dt><dd id="order-price"></dd></div>
+    </dl>
+    <label class="order-label" for="order-text">Текст заказа</label>
+    <textarea id="order-text" class="order-text" rows="4" readonly></textarea>
+    <a id="order-tg" class="btn btn-primary order-send" href="#" target="_blank" rel="noopener">Написать в Telegram</a>
+    <p id="order-hint" class="order-hint">Нажмите кнопку: текст заказа скопируется, и откроется чат со мной.</p>
+  </div>
+</dialog>
+
+<script>
+  import './../scripts/purchase-init';
+</script>
