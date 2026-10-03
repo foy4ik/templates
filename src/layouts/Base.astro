@@ -3,14 +3,18 @@ import '../styles/tokens.css';
 import '../styles/base.css';
 import '../styles/components.css';
 import { url } from '../lib/url';
+import { siteConfig } from '../../site.config';
+import { robotsMeta } from '../lib/seo';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
   description?: string;
+  noindex?: boolean;
 }
-const { title, description = 'Готовые боты и сайты: запустите за вечер или закажите установку под ключ.' } = Astro.props;
+const { title, description = 'Готовые боты и сайты: запустите за вечер или закажите установку под ключ.', noindex = false } = Astro.props;
+const robots = robotsMeta(siteConfig.indexing, noindex);
 ---
 
 <!doctype html>
@@ -20,6 +24,7 @@ const { title, description = 'Готовые боты и сайты: запус�
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {robots && <meta name="robots" content={robots} />}
     <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

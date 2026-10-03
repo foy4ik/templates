@@ -6,4 +6,6 @@ export const siteConfig = {
   metrikaId: '',
   paymentEnabled: false,
   updateMonths: 3,
+  // Перед запуском переключить на true: до этого сайт закрыт от индексации.
+  indexing: false,
 } as const;
