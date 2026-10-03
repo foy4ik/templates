@@ -1,0 +1,29 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { url } from '../lib/url';
+import { formatPrice } from '../lib/format';
+import { categoryLabel, displayPrice } from '../lib/templates';
+import Cover from './Cover.astro';
+
+interface Props {
+  entry: CollectionEntry<'templates'>;
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const price = displayPrice(d);
+---
+
+<article class="card tcard">
+  <div class="tcard-art">
+    <Cover category={d.category} shot={d.screenshots[0]} alt={`Обложка: ${d.title}`} />
+  </div>
+  <div class="tcard-body">
+    <div class="tcard-top">
+      <span class="badge">{categoryLabel(d.category)}</span>
+      {d.status === 'soon' && <span class="badge badge-soon">Скоро</span>}
+    </div>
+    <h3><a href={url(`templates/${entry.id}/`)}>{d.title}</a></h3>
+    <p class="tcard-for">{d.audience}</p>
+    {price !== null && <div class="tcard-price">от {formatPrice(price)}</div>}
+  </div>
+</article>

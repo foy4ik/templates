@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import { siteConfig } from '../../site.config';
+---
+
+<Base title="Индивидуальная разработка ботов и сайтов под ключ" description="Не нашли подходящий шаблон? Сделаю бота, мини-приложение, сайт или парсер под вашу задачу.">
+  <div class="wrap page" style="padding-block: 72px;">
+    <p class="eyebrow">// под ключ</p>
+    <h1>Не нашли подходящий шаблон?</h1>
+    <p class="muted" style="max-width: 60ch;">
+      Разрабатываю Telegram-ботов, мини-приложения, сайты и парсеры под вашу задачу. Расскажите, что нужно, и я скажу, как это лучше сделать, сколько займёт времени и во сколько обойдётся. Примеры работ смотрите в портфолио.
+    </p>
+    <div class="cta-row">
+      <Button href={`https://t.me/${siteConfig.telegramUsername}`}>Написать в Telegram</Button>
+      <Button href={siteConfig.portfolioUrl} variant="ghost">Смотреть портфолио</Button>
+    </div>
+  </div>
+</Base>

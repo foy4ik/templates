@@ -1,11 +1,62 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import TemplateCard from '../components/TemplateCard.astro';
+import { siteConfig } from '../../site.config';
+import { url } from '../lib/url';
+import { sortTemplates } from '../lib/templates';
+
+const all = await getCollection('templates');
+const featured = sortTemplates(all.map((e) => ({ slug: e.id, data: e.data, entry: e })))
+  .filter((i) => i.data.featured)
+  .slice(0, 6);
+const steps = [
+  { t: 'Выберите шаблон', d: 'Откройте каталог и найдите решение под вашу задачу.' },
+  { t: 'Попробуйте демо', d: 'Посмотрите, как всё работает вживую, до покупки.' },
+  { t: 'Запустите сами или закажите под ключ', d: 'Возьмите исходники или поручите мне установку и настройку.' },
+];
 ---
 
-<Base title="Готовые шаблоны ботов и сайтов">
-  <main class="wrap" style="padding-block: 96px;">
+<Base title="Готовые боты и сайты — шаблоны и установка под ключ">
+  <div class="wrap hero">
     <p class="eyebrow">// готовые шаблоны</p>
-    <h1>Готовые боты и сайты</h1>
-    <p style="color: var(--text-dim);">Каркас сайта. Каталог появится на следующем этапе.</p>
-  </main>
+    <h1>Готовые боты и сайты: <span>запустите за вечер</span> или закажите установку под ключ</h1>
+    <p>Шаблоны Telegram-ботов, мини-приложений, лендингов и парсеров. Попробуйте демо, возьмите исходники или поручите установку мне.</p>
+    <div class="cta-row">
+      <Button href={url('catalog/')}>Смотреть каталог</Button>
+      <Button href={`https://t.me/${siteConfig.telegramUsername}`} variant="ghost">Написать в Telegram</Button>
+    </div>
+  </div>
+
+  <section class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">// популярное</p>
+      <h2>Популярные шаблоны</h2>
+    </div>
+    <ul class="grid">
+      {featured.map((i) => <li><TemplateCard entry={i.entry} /></li>)}
+    </ul>
+  </section>
+
+  <section class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">// как это работает</p>
+      <h2>Три шага</h2>
+    </div>
+    <ol class="steps">
+      {steps.map((s) => <li><b>{s.t}</b><span>{s.d}</span></li>)}
+    </ol>
+  </section>
+
+  <section class="wrap">
+    <div class="cta-block">
+      <h2>Не нашли подходящий шаблон?</h2>
+      <p>Сделаю индивидуальное решение под вашу задачу. Примеры работ есть в портфолио.</p>
+      <div class="cta-row">
+        <Button href={url('custom/')}>Индивидуальная разработка</Button>
+        <Button href={siteConfig.portfolioUrl} variant="ghost">Портфолио</Button>
+      </div>
+    </div>
+  </section>
 </Base>

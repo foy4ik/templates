@@ -1,0 +1,104 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Button from '../../components/Button.astro';
+import Gallery from '../../components/Gallery.astro';
+import PurchaseCard from '../../components/PurchaseCard.astro';
+import RelatedTemplates from '../../components/RelatedTemplates.astro';
+import { categoryLabel, getRelated } from '../../lib/templates';
+
+export async function getStaticPaths() {
+  const all = await getCollection('templates');
+  return all.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry, all },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'templates'>;
+  all: CollectionEntry<'templates'>[];
+}
+const { entry, all } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+
+const asItem = (e: CollectionEntry<'templates'>) => ({ slug: e.id, data: e.data, entry: e });
+const related = getRelated(all.map(asItem), asItem(entry)).map((i) => i.entry);
+const isReady = d.status === 'ready';
+---
+
+<Base title={`${d.title} — готовый шаблон`} description={d.short}>
+  <div class="wrap" style="padding-block: 48px 24px;">
+    <header class="tpl-head">
+      <div class="tpl-meta">
+        <span class="badge">{categoryLabel(d.category)}</span>
+        <span class={`badge ${isReady ? 'badge-ready' : 'badge-soon'}`}>{isReady ? 'Готов' : 'Скоро'}</span>
+      </div>
+      <h1>{d.title}</h1>
+      <p class="tpl-for">Для кого: {d.audience}</p>
+    </header>
+
+    <section class="block">
+      <div class="prose"><Content /></div>
+    </section>
+
+    {
+      isReady ? (
+        <section class="block">
+          <h2>Демо</h2>
+          <div class="demo">
+            <Button href={d.demo_url!} variant="primary">Попробовать демо</Button>
+            {d.video && <Button href={d.video} variant="ghost">Смотреть видео</Button>}
+          </div>
+          <Gallery shots={d.screenshots} category={d.category} title={d.title} />
+        </section>
+      ) : null
+    }
+
+    <section class="block">
+      <h2>{isReady ? 'Что умеет шаблон' : 'Планируемые функции'}</h2>
+      <ul class="features">
+        {d.features.map((f) => <li>{f}</li>)}
+      </ul>
+    </section>
+
+    {
+      isReady ? (
+        <>
+          <section class="block">
+            <h2>Как получить</h2>
+            <div class="buy">
+              <PurchaseCard variant="source" slug={entry.id} title={d.title} priceSource={d.price_source!} priceTurnkey={d.price_turnkey!} turnkeyDays={d.turnkey_days!} />
+              <PurchaseCard variant="turnkey" slug={entry.id} title={d.title} priceSource={d.price_source!} priceTurnkey={d.price_turnkey!} turnkeyDays={d.turnkey_days!} />
+            </div>
+          </section>
+
+          <section class="block">
+            <h2>Стек и требования</h2>
+            <dl class="spec">
+              <div><dt>Стек</dt><dd>{d.stack}</dd></div>
+              <div>
+                <dt>Для запуска нужно</dt>
+                <dd><ul>{d.requirements!.map((r) => <li>{r}</li>)}</ul></dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="block faq">
+            <h2>Вопросы и ответы</h2>
+            {d.faq!.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+          </section>
+        </>
+      ) : (
+        <section class="block">
+          <p class="muted">Шаблон ещё в работе. Нажмите кнопку, чтобы я знал, что он вам нужен.</p>
+          <Button data-purchase data-slug={entry.id} data-title={d.title} data-variant="wish">Хочу этот шаблон</Button>
+        </section>
+      )
+    }
+
+    <RelatedTemplates entries={related} />
+  </div>
+</Base>

@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import TemplateCard from '../components/TemplateCard.astro';
+import CatalogFilter from '../components/CatalogFilter.astro';
+import { sortTemplates } from '../lib/templates';
+
+const items = sortTemplates((await getCollection('templates')).map((e) => ({ slug: e.id, data: e.data, entry: e })));
+---
+
+<Base title="Каталог шаблонов — Telegram-боты, мини-приложения, сайты, парсеры" description="Готовые шаблоны Telegram-ботов, мини-приложений, лендингов и парсеров: исходники или установка под ключ.">
+  <div class="wrap page" style="padding-block: 56px;">
+    <p class="eyebrow">// каталог</p>
+    <h1>Все шаблоны</h1>
+    <p class="muted" style="margin-bottom: 28px;">Готовые решения: берите исходники или закажите установку под ключ.</p>
+    <CatalogFilter />
+    <ul class="grid">
+      {items.map((i) => <li data-category={i.data.category}><TemplateCard entry={i.entry} /></li>)}
+    </ul>
+  </div>
+</Base>

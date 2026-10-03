@@ -1,0 +1,48 @@
+---
+import { siteConfig } from '../../site.config';
+import { formatPrice } from '../lib/format';
+import Button from './Button.astro';
+
+interface Props {
+  variant: 'source' | 'turnkey';
+  slug: string;
+  title: string;
+  priceSource: number;
+  priceTurnkey: number;
+  turnkeyDays: number;
+}
+const { variant, slug, title, priceSource, priceTurnkey, turnkeyDays } = Astro.props;
+const isSource = variant === 'source';
+const months = siteConfig.updateMonths;
+const data = {
+  'data-purchase': '',
+  'data-slug': slug,
+  'data-title': title,
+  'data-variant': variant,
+  'data-price-source': String(priceSource),
+  'data-price-turnkey': String(priceTurnkey),
+};
+---
+
+<div class="card pcard">
+  <h3>{isSource ? 'Исходники' : 'Под ключ'}</h3>
+  <div class="price">{isSource ? formatPrice(priceSource) : `от ${formatPrice(priceTurnkey)}`}</div>
+  {
+    isSource ? (
+      <ul>
+        <li>Полный код шаблона</li>
+        <li>Инструкция по запуску</li>
+        <li>Обновления на {months} мес.</li>
+      </ul>
+    ) : (
+      <ul>
+        <li>Установка на ваш сервер</li>
+        <li>Настройка под ваш бизнес</li>
+        <li>Правки после запуска</li>
+        <li>Поддержка</li>
+        <li>Срок: {turnkeyDays} дн.</li>
+      </ul>
+    )
+  }
+  <Button {...data}>{isSource ? 'Купить исходники' : 'Заказать под ключ'}</Button>
+</div>

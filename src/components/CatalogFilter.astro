@@ -1,0 +1,14 @@
+---
+import { CATEGORIES } from '../lib/templates';
+---
+
+<div class="filter" id="catalog-filter" role="group" aria-label="Категории" hidden>
+  <button type="button" data-filter="all" aria-pressed="true">Все</button>
+  {CATEGORIES.map((c) => <button type="button" data-filter={c.id} aria-pressed="false">{c.label}</button>)}
+</div>
+<p class="empty" id="catalog-empty" hidden>Пока здесь пусто.</p>
+
+<script>
+  import { initCatalogFilter } from '../scripts/catalog-filter';
+  initCatalogFilter();
+</script>

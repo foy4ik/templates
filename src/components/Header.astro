@@ -1,0 +1,30 @@
+---
+import { siteConfig } from '../../site.config';
+import { url } from '../lib/url';
+
+const tg = `https://t.me/${siteConfig.telegramUsername}`;
+const links = [
+  { href: url('catalog/'), label: 'Каталог' },
+  { href: url('custom/'), label: 'Под ключ' },
+  { href: siteConfig.portfolioUrl, label: 'Портфолио' },
+];
+---
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href={url()}><span class="logo-dot"></span>шаблоны</a>
+    <ul class="nav-links">
+      {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+    </ul>
+    <div class="nav-right">
+      <a class="btn btn-primary btn-sm nav-cta" href={tg} target="_blank" rel="noopener">Написать в Telegram</a>
+      <details class="menu">
+        <summary aria-label="Меню">меню</summary>
+        <div class="menu-panel">
+          {links.map((l) => <a href={l.href}>{l.label}</a>)}
+          <a class="btn btn-primary" href={tg} target="_blank" rel="noopener">Написать в Telegram</a>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>

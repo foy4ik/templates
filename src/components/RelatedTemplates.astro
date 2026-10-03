@@ -1,0 +1,20 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import TemplateCard from './TemplateCard.astro';
+
+interface Props {
+  entries: CollectionEntry<'templates'>[];
+}
+const { entries } = Astro.props;
+---
+
+{
+  entries.length > 0 && (
+    <section class="block">
+      <h2>Другие шаблоны</h2>
+      <ul class="grid">
+        {entries.map((e) => <li><TemplateCard entry={e} /></li>)}
+      </ul>
+    </section>
+  )
+}

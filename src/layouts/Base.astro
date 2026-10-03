@@ -1,7 +1,10 @@
 ---
 import '../styles/tokens.css';
 import '../styles/base.css';
+import '../styles/components.css';
 import { url } from '../lib/url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
@@ -26,6 +29,10 @@ const { title, description = 'Готовые боты и сайты: запус�
     />
   </head>
   <body>
-    <slot />
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>

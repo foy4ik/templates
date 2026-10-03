@@ -1,0 +1,17 @@
+---
+import { siteConfig } from '../../site.config';
+import { url } from '../lib/url';
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <div>Контакты: <a href={`https://t.me/${siteConfig.telegramUsername}`} target="_blank" rel="noopener">@{siteConfig.telegramUsername}</a></div>
+    </div>
+    <ul>
+      <li><a href={url('offer/')}>Оферта</a></li>
+      <li><a href={url('privacy/')}>Политика конфиденциальности</a></li>
+      <li><a href={siteConfig.portfolioUrl}>Портфолио</a></li>
+    </ul>
+  </div>
+</footer>
