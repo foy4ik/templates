@@ -2,7 +2,7 @@
 import '../styles/tokens.css';
 import '../styles/base.css';
 import '../styles/components.css';
-import { url } from '../lib/url';
+import { url, absoluteUrl } from '../lib/url';
 import { siteConfig } from '../../site.config';
 import { robotsMeta } from '../lib/seo';
 import Header from '../components/Header.astro';
@@ -13,8 +13,15 @@ interface Props {
   title: string;
   description?: string;
   noindex?: boolean;
+  /** Absolute URL of the Open Graph image. Defaults to the generic cover. */
+  image?: string;
+  /** JSON-LD object, rendered when present. */
+  ld?: object | null;
+  ogType?: 'website' | 'product';
 }
-const { title, description = 'Готовые боты и сайты: запустите за вечер или закажите установку под ключ.', noindex = false } = Astro.props;
+const { title, description = 'Готовые боты и сайты: запустите за вечер или закажите установку под ключ.', noindex = false, image, ld = null, ogType = 'website' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
+const ogImage = image ?? absoluteUrl('og/default.png');
 const robots = robotsMeta(siteConfig.indexing, noindex);
 const metrikaId = siteConfig.metrikaId;
 const metrikaSnippet = `(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");ym(${metrikaId},"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true});`;
@@ -28,6 +35,18 @@ const metrikaSnippet = `(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m
     <title>{title}</title>
     <meta name="description" content={description} />
     {robots && <meta name="robots" content={robots} />}
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Шаблоны" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {ld && <script type="application/ld+json" set:html={JSON.stringify(ld)} />}
     <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

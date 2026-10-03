@@ -19,6 +19,7 @@
     "test": "vitest run",
     "check": "astro check",
     "screenshots": "node scripts/screenshots.mjs",
-    "check:order": "node scripts/check-order.mjs"
+    "check:order": "node scripts/check-order.mjs",
+    "og": "node scripts/make-og.mjs"
   }
 }

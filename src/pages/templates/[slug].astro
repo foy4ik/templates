@@ -6,7 +6,10 @@ import Button from '../../components/Button.astro';
 import Gallery from '../../components/Gallery.astro';
 import PurchaseCard from '../../components/PurchaseCard.astro';
 import RelatedTemplates from '../../components/RelatedTemplates.astro';
+import { getImage } from 'astro:assets';
 import { categoryLabel, getRelated } from '../../lib/templates';
+import { absoluteUrl } from '../../lib/url';
+import { pageTitle, buildProductLd } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const all = await getCollection('templates');
@@ -27,9 +30,24 @@ const { Content } = await render(entry);
 const asItem = (e: CollectionEntry<'templates'>) => ({ slug: e.id, data: e.data, entry: e });
 const related = getRelated(all.map(asItem), asItem(entry)).map((i) => i.entry);
 const isReady = d.status === 'ready';
+
+const shot = d.screenshots[0];
+const ogImage = shot
+  ? new URL((await getImage({ src: shot, width: 1200, height: 630, fit: 'cover', format: 'jpg' })).src, Astro.site).href
+  : absoluteUrl(`og/${d.category}.png`);
+const title = pageTitle({ title: d.title, category: d.category });
+const ld = buildProductLd({
+  status: d.status,
+  name: d.title,
+  description: d.short,
+  image: ogImage,
+  url: absoluteUrl(`templates/${entry.id}/`),
+  priceSource: d.price_source,
+  priceTurnkey: d.price_turnkey,
+});
 ---
 
-<Base title={`${d.title} — готовый шаблон`} description={d.short}>
+<Base title={title} description={d.short} image={ogImage} ld={ld} ogType={isReady ? 'product' : 'website'}>
   <div class="wrap" style="padding-block: 48px 24px;">
     <header class="tpl-head">
       <div class="tpl-meta">

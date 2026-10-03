@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import { siteConfig } from '../../site.config';
+import { url } from '../lib/url';
+---
+
+<Base title="Спасибо за покупку" noindex>
+  <div class="wrap page" style="padding-block: 72px;">
+    <p class="eyebrow">// заказ</p>
+    <h1>Спасибо за покупку</h1>
+    <p class="muted" style="max-width: 60ch;">
+      Файлы и инструкция по запуску придут в Telegram в течение нескольких часов. Если что-то не пришло или нужна помощь с установкой, напишите мне.
+    </p>
+    <div class="cta-row">
+      <Button href={`https://t.me/${siteConfig.telegramUsername}`}>Написать в Telegram</Button>
+      <Button href={url('catalog/')} variant="ghost">В каталог</Button>
+    </div>
+  </div>
+</Base>
